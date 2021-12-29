@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble(this.message, this.userId);
+  MessageBubble(this.message, this.userName, this.userId);
   final String message;
+  final String userName;
   final String userId;
   // final Key key;
 
@@ -38,13 +40,38 @@ class MessageBubble extends StatelessWidget {
           width: 150,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Text(
-            message,
-            style: TextStyle(
-                color: isMe()
-                    ? Colors.black
-                    : const Color.fromRGBO(255, 253, 208, 6),
-                fontWeight: FontWeight.bold),
+          child: Column(
+            crossAxisAlignment:
+                isMe() ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              // FutureBuilder<DocumentSnapshot>(
+              //     future: FirebaseFirestore.instance
+              //         .collection("users")
+              //         .doc(userId)
+              //         .get(),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return const Text('Loading..');
+              //       }
+              //       if (!snapshot.hasData) {
+              //         return const Text('Loading..');
+              //       }
+              //       return
+
+              Text(userName, style: TextStyle(fontWeight: FontWeight.bold))
+              // ;
+              // })
+              ,
+              Text(
+                message,
+                textAlign: isMe() ? TextAlign.end : TextAlign.start,
+                style: TextStyle(
+                    color: isMe()
+                        ? Colors.black
+                        : const Color.fromRGBO(255, 253, 208, 6),
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
       ],

@@ -29,8 +29,8 @@ class Messages extends StatelessWidget {
             itemBuilder: (context, index) {
               return Container(
                 padding: const EdgeInsets.all(8),
-                child:
-                    MessageBubble(docs[index]["text"], docs[index]["userId"]),
+                child: MessageBubble(docs[index]["text"],
+                    docs[index]["username"], docs[index]["userId"]),
               );
             },
           );

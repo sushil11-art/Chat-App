@@ -1,3 +1,4 @@
+import 'package:chat_app/widgets/pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 // ignore: empty_constructor_bodies
@@ -44,6 +45,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  ImagePicker(),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {
