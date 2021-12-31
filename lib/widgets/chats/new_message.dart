@@ -16,6 +16,7 @@ class _NewMessageState extends State<NewMessage> {
     FocusScope.of(context).unfocus();
     final user = FirebaseAuth.instance.currentUser;
     var username;
+    var image_url;
     // final userData = FirebaseFirestore.instance
     //     .collection("users")
     //     .doc(user!.uid)
@@ -24,16 +25,19 @@ class _NewMessageState extends State<NewMessage> {
     var docSnapshot = await collection.doc(user!.uid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      username = data?['username']; // <-- The value you want to retrieve.
-      // Call setState if needed.s
+      username = data?['username'];
+      image_url = data?['image_url']; // <-- The value you want to retrieve.
+      // Call setState if needed.
     }
     FirebaseFirestore.instance.collection('chat').add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
       'userId': user.uid,
-      'username': username
+      'username': username,
+      'userImage': image_url
     });
     _controller.clear();
+    // _controller.dispose();
   }
 
   @override

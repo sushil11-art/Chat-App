@@ -1,17 +1,22 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagePicker extends StatefulWidget {
-  const UserImagePicker({Key? key}) : super(key: key);
+  // const UserImagePicker({Key? key}) : super(key: key);
+  UserImagePicker(this.imagePickFn);
+
+  final void Function(File pickedImage) imagePickFn;
 
   @override
   _UserImagePickerState createState() => _UserImagePickerState();
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  late XFile _pickedImage;
+  // File? _pickedImage;
+  File? file;
   // PickedFile? imageFile = null;
   ImagePicker _picker = ImagePicker();
   Future<void> _showChoiceDialog(BuildContext context) {
@@ -63,24 +68,29 @@ class _UserImagePickerState extends State<UserImagePicker> {
   }
 
   void _openGallery(BuildContext context) async {
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery, maxWidth: 150, imageQuality: 50);
     setState(() {
-      _pickedImage = pickedFile as XFile;
+      // final = await _picker.pickImage(source: source);
+
+      file = File(image!.path);
+      // return file;
+      //   _pickedImage = pickedFile as File;
       // imageFile = pickedFile! as PickedFile?;
     });
+    widget.imagePickFn(file!);
 
     Navigator.pop(context);
   }
 
   void _openCamera(BuildContext context) async {
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.camera,
-    );
+    final XFile? image = await _picker.pickImage(
+        source: ImageSource.camera, maxWidth: 150, imageQuality: 50);
     setState(() {
-      _pickedImage = pickedFile as XFile;
+      file = File(image!.path);
     });
+    widget.imagePickFn(file!);
+
     Navigator.pop(context);
   }
 
@@ -90,6 +100,8 @@ class _UserImagePickerState extends State<UserImagePicker> {
       children: [
         CircleAvatar(
           radius: 40,
+          backgroundColor: Colors.grey,
+          backgroundImage: file != null ? FileImage(file!) : null,
         ),
         ElevatedButton.icon(
             onPressed: () {
