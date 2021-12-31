@@ -20,7 +20,7 @@ class Authscreen extends StatefulWidget {
 class _AuthscreenState extends State<Authscreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
-  void _submitAuthForm(String email, String username, File image,
+  void _submitAuthForm(String email, String username, var image,
       String password, bool isLogin, BuildContext ctx) async {
     UserCredential authResult;
     try {
@@ -40,7 +40,7 @@ class _AuthscreenState extends State<Authscreen> {
             .ref()
             .child('user_image')
             .child(authResult.user!.uid + '.jpg');
-        await ref.putFile(image);
+        await ref.putFile(image!);
         final url = await ref.getDownloadURL();
 
         await FirebaseFirestore.instance

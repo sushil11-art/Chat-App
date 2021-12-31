@@ -8,7 +8,7 @@ class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
 
   final bool isLoading;
-  final void Function(String email, String username, File image,
+  final void Function(String email, String username, File? image,
       String password, bool isLogin, BuildContext context) submitFn;
   // const AuthForm({Key? key}) : super(key: key);
 
@@ -33,7 +33,7 @@ class _AuthFormState extends State<AuthForm> {
     final _isValid = _formKey.currentState!.validate();
     // to close the keyboard
     FocusScope.of(context).unfocus();
-    if (_image == null) {
+    if (!_isLogin && _image == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Please upload a image"),
         backgroundColor: Colors.red,
@@ -42,7 +42,7 @@ class _AuthFormState extends State<AuthForm> {
     }
     if (_isValid) {
       _formKey.currentState!.save();
-      widget.submitFn(_userEmail.trim(), _userName.trim(), _image!,
+      widget.submitFn(_userEmail.trim(), _userName.trim(), _image,
           _userPassword.trim(), _isLogin, context);
     }
   }
